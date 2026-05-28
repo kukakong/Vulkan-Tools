@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulkan-Tools Code Wiki</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d29922;
+            --accent-purple: #bc8cff;
+            --accent-red: #f85149;
+            --code-bg: #161b22;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1e2e 0%, #0d1117 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .header .subtitle { color: var(--text-secondary); font-size: 1.1em; }
+        .header .meta {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header .meta span {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            color: var(--accent-blue);
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+        .nav h2 { font-size: 1.1em; margin-bottom: 10px; color: var(--accent-green); }
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .nav-links a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            background: var(--bg-tertiary);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .nav-links a:hover {
+            background: var(--accent-blue);
+            color: var(--bg-primary);
+            border-color: var(--accent-blue);
+        }
+
+        /* Sections */
+        .section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+        .section h2 {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            color: var(--accent-purple);
+        }
+        .section h3 {
+            font-size: 1.2em;
+            margin: 20px 0 10px;
+            color: var(--accent-green);
+        }
+        .section h4 {
+            font-size: 1.05em;
+            margin: 15px 0 8px;
+            color: var(--accent-orange);
+        }
+        .section p { margin-bottom: 12px; color: var(--text-secondary); }
+        .section ul, .section ol { margin: 10px 0 15px 25px; color: var(--text-secondary); }
+        .section li { margin-bottom: 5px; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        th {
+            background: var(--bg-tertiary);
+            color: var(--accent-blue);
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+        td {
+            padding: 8px 14px;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        tr:hover td { background: var(--bg-tertiary); }
+
+        /* Code */
+        code {
+            background: var(--bg-tertiary);
+            color: var(--accent-orange);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.88em;
+        }
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+            font-size: 0.88em;
+        }
+
+        /* Tree view */
+        .tree {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.85em;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        .tree .dir { color: var(--accent-blue); font-weight: bold; }
+        .tree .file { color: var(--text-secondary); }
+        .tree .desc { color: var(--accent-green); }
+
+        /* Flow diagram */
+        .flow {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.85em;
+            line-height: 1.6;
+            overflow-x: auto;
+            text-align: center;
+        }
+        .flow .arrow { color: var(--accent-orange); }
+        .flow .gen { color: var(--accent-purple); }
+        .flow .output { color: var(--accent-green); }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.78em;
+            font-weight: 600;
+            margin: 2px;
+        }
+        .badge-c { background: #1e3a5f; color: #58a6ff; border: 1px solid #2a5a8f; }
+        .badge-cpp { background: #3f1e5f; color: #bc8cff; border: 1px solid #6a2ebf; }
+        .badge-python { background: #1e4f3a; color: #3fb950; border: 1px solid #2a8f5a; }
+        .badge-cmake { background: #3f3f1e; color: #d29922; border: 1px solid #8f8f2a; }
+        .badge-glsl { background: #3f1e1e; color: #f85149; border: 1px solid #8f2a2a; }
+
+        /* Card grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            transition: border-color 0.2s;
+        }
+        .card:hover { border-color: var(--accent-blue); }
+        .card h4 { margin: 0 0 8px; color: var(--accent-blue); }
+        .card p { margin: 0; font-size: 0.9em; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 0.85em;
+            border-top: 1px solid var(--border-color);
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .header h1 { font-size: 1.8em; }
+            .section { padding: 15px; }
+            .nav { position: static; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>🎮 Vulkan-Tools Code Wiki</h1>
+        <p class="subtitle">Khronos Group Official Vulkan Tools &amp; Utilities</p>
+        <div class="meta">
+            <span>🌿 Branch: main</span>
+            <span>📦 Version: 1.4.352</span>
+            <span>📝 Commit: e3d18f9</span>
+            <span>⚖️ License: Apache 2.0</span>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <h2>📑 Quick Navigation</h2>
+        <div class="nav-links">
+            <a href="#overview">Overview</a>
+            <a href="#structure">Structure</a>
+            <a href="#build">Build System</a>
+            <a href="#cube">VkCube</a>
+            <a href="#vulkaninfo">VulkanInfo</a>
+            <a href="#icd">Mock ICD</a>
+            <a href="#scripts">Scripts</a>
+            <a href="#tests">Tests</a>
+            <a href="#deps">Dependencies</a>
+            <a href="#cross-compile">Cross-Compile</a>
+            <a href="#data-structures">Data Structures</a>
+            <a href="#wsi">WSI Support</a>
+            <a href="#codegen">Code Generation</a>
+        </div>
+    </div>
+
+    <!-- Overview -->
+    <div class="section" id="overview">
+        <h2>🎯 Project Overview</h2>
+        <p>Vulkan-Tools is the official Khronos Group repository providing essential Vulkan tools and utilities that assist developers in verifying their applications' correct use of the Vulkan API. Primarily developed by LunarG, Inc. with contributions from Valve Corporation and oversight by Khronos.</p>
+
+        <div class="card-grid">
+            <div class="card">
+                <h4>vkcube <span class="badge badge-c">C99</span></h4>
+                <p>Vulkan cube demo application using the C API. Validates Vulkan rendering with a spinning 3D cube.</p>
+            </div>
+            <div class="card">
+                <h4>vkcubepp <span class="badge badge-cpp">C++17</span></h4>
+                <p>C++ version of the cube demo using Vulkan C++ wrappers. Same functionality, modern C++ interface.</p>
+            </div>
+            <div class="card">
+                <h4>vulkaninfo <span class="badge badge-cpp">C++17</span></h4>
+                <p>GPU/device capability reporting tool. Outputs text, HTML, or JSON format.</p>
+            </div>
+            <div class="card">
+                <h4>VkICD_mock_icd <span class="badge badge-cpp">C++17</span></h4>
+                <p>Mock Installable Client Driver for testing. Implements Vulkan API without real hardware.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Repository Structure -->
+    <div class="section" id="structure">
+        <h2>📁 Repository Structure</h2>
+        <div class="tree">
+<span class="dir">Vulkan-Tools/</span>
+├── <span class="file">CMakeLists.txt</span>          <span class="desc"># Top-level CMake (v1.4.352)</span>
+├── <span class="file">BUILD.md</span>                <span class="desc"># Build instructions</span>
+├── <span class="file">BUILD.gn</span>                <span class="desc"># GN build config (Chromium)</span>
+├── <span class="dir">cube/</span>                   <span class="desc"># VkCube demo application</span>
+│   ├── <span class="file">cube.c</span>              <span class="desc"># C version of the demo</span>
+│   ├── <span class="file">cube.cpp</span>            <span class="desc"># C++ version of the demo</span>
+│   ├── <span class="file">cube_functions.h</span>    <span class="desc"># Vulkan function pointer declarations</span>
+│   ├── <span class="file">cube.vert</span> / <span class="file">cube.frag</span>  <span class="desc"># GLSL shaders</span>
+│   ├── <span class="file">cube.vert.inc</span> / <span class="file">cube.frag.inc</span>  <span class="desc"># Pre-compiled SPIR-V</span>
+│   ├── <span class="file">linmath.h</span>           <span class="desc"># Linear math utilities</span>
+│   ├── <span class="file">gettime.h</span>           <span class="desc"># Time measurement</span>
+│   ├── <span class="dir">android/</span>            <span class="desc"># Android-specific build</span>
+│   ├── <span class="dir">macOS/</span>              <span class="desc"># macOS app bundles</span>
+│   ├── <span class="file">xcb_loader.h</span>        <span class="desc"># XCB WSI dynamic loader</span>
+│   ├── <span class="file">xlib_loader.h</span>       <span class="desc"># Xlib WSI dynamic loader</span>
+│   └── <span class="file">wayland_loader.h</span>    <span class="desc"># Wayland WSI dynamic loader</span>
+├── <span class="dir">vulkaninfo/</span>             <span class="desc"># Vulkan info tool</span>
+│   ├── <span class="file">vulkaninfo.cpp</span>      <span class="desc"># Main source file</span>
+│   ├── <span class="file">vulkaninfo.h</span>        <span class="desc"># Core data structures</span>
+│   ├── <span class="file">vulkaninfo_functions.h</span> <span class="desc"># Function implementations</span>
+│   ├── <span class="file">outputprinter.h</span>     <span class="desc"># Multi-format output printer</span>
+│   └── <span class="dir">generated/</span>          <span class="desc"># Auto-generated code</span>
+├── <span class="dir">icd/</span>                    <span class="desc"># Mock ICD</span>
+│   ├── <span class="file">mock_icd.cpp</span>        <span class="desc"># Mock ICD implementation</span>
+│   ├── <span class="file">mock_icd.h</span>          <span class="desc"># Data structures and state</span>
+│   ├── <span class="file">VkICD_mock_icd.json.in</span> <span class="desc"># ICD manifest template</span>
+│   └── <span class="dir">generated/</span>          <span class="desc"># Auto-generated headers</span>
+├── <span class="dir">scripts/</span>                <span class="desc"># Code generation &amp; build scripts</span>
+│   ├── <span class="file">generate_source.py</span>  <span class="desc"># Main code generation entry</span>
+│   ├── <span class="file">android.py</span>          <span class="desc"># Android build automation</span>
+│   ├── <span class="file">update_deps.py</span>      <span class="desc"># Dependency fetcher</span>
+│   ├── <span class="file">known_good.json</span>     <span class="desc"># Pinned dependency versions</span>
+│   └── <span class="dir">generators/</span>         <span class="desc"># Code generator implementations</span>
+└── <span class="dir">tests/</span>                  <span class="desc"># Test suite</span>
+    ├── <span class="file">main.cpp</span>            <span class="desc"># Test runner</span>
+    └── <span class="dir">icd/</span>               <span class="desc"># Mock ICD tests</span>
+        </div>
+    </div>
+
+    <!-- Build System -->
+    <div class="section" id="build">
+        <h2>🔧 Build System</h2>
+
+        <h3>CMake Configuration Options</h3>
+        <table>
+            <thead>
+                <tr><th>Option</th><th>Default</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>BUILD_CUBE</code></td><td>ON</td><td>Build vkcube and vkcubepp</td></tr>
+                <tr><td><code>BUILD_VULKANINFO</code></td><td>ON</td><td>Build vulkaninfo</td></tr>
+                <tr><td><code>BUILD_ICD</code></td><td>ON</td><td>Build Mock ICD</td></tr>
+                <tr><td><code>BUILD_TESTS</code></td><td>OFF</td><td>Build test suite</td></tr>
+                <tr><td><code>BUILD_WERROR</code></td><td>OFF</td><td>Treat warnings as errors</td></tr>
+                <tr><td><code>TOOLS_CODEGEN</code></td><td>OFF</td><td>Enable code generation target</td></tr>
+                <tr><td><code>UPDATE_DEPS</code></td><td>OFF</td><td>Auto-fetch dependencies</td></tr>
+                <tr><td><code>INSTALL_ICD</code></td><td>OFF</td><td>Install Mock ICD to system</td></tr>
+                <tr><td><code>ENABLE_ADDRESS_SANITIZER</code></td><td>OFF</td><td>Enable ASan</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Compiler Requirements</h3>
+        <table>
+            <thead>
+                <tr><th>Property</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>C Standard</td><td>C99</td></tr>
+                <tr><td>C++ Standard</td><td>C++17 (required)</td></tr>
+                <tr><td>Visibility</td><td>Hidden by default</td></tr>
+                <tr><td>PIC</td><td>Position Independent Code enabled</td></tr>
+                <tr><td>CMake Minimum</td><td>3.22.1</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Standard Build Commands</h3>
+        <pre><code># Quick build with auto-dependencies
+cmake -S . -B build -D UPDATE_DEPS=ON -D CMAKE_BUILD_TYPE=Release
+cmake --build build
+
+# Development build with tests
+cmake -S . -B build -D UPDATE_DEPS=ON -D BUILD_WERROR=ON -D BUILD_TESTS=ON -D CMAKE_BUILD_TYPE=Debug
+cmake --build build</code></pre>
+    </div>
+
+    <!-- VkCube Module -->
+    <div class="section" id="cube">
+        <h2>🎲 Module: cube (VkCube Demo)</h2>
+
+        <h3>Purpose</h3>
+        <p>Spinning 3D cube demo that validates Vulkan rendering functionality. Two versions:</p>
+        <ul>
+            <li><strong>vkcube</strong> (C API, <code>cube.c</code>) — Direct C-style Vulkan calls <span class="badge badge-c">C99</span></li>
+            <li><strong>vkcubepp</strong> (C++ API, <code>cube.cpp</code>) — C++ wrapper Vulkan calls <span class="badge badge-cpp">C++17</span></li>
+        </ul>
+
+        <h3>Key Files</h3>
+        <table>
+            <thead><tr><th>File</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>cube.c</code></td><td>Main C demo, full Vulkan pipeline setup</td></tr>
+                <tr><td><code>cube.cpp</code></td><td>C++ version of the demo</td></tr>
+                <tr><td><code>cube_functions.h</code></td><td>Vulkan function pointer declarations &amp; dynamic loading</td></tr>
+                <tr><td><code>cube.vert</code> / <code>cube.frag</code></td><td>GLSL vertex/fragment shaders <span class="badge badge-glsl">GLSL</span></td></tr>
+                <tr><td><code>cube.vert.inc</code> / <code>cube.frag.inc</code></td><td>Pre-compiled SPIR-V shader bytecode (C arrays)</td></tr>
+                <tr><td><code>linmath.h</code></td><td>Lightweight linear algebra (mat4x4, vec4)</td></tr>
+                <tr><td><code>gettime.h</code></td><td>Platform-independent time measurement</td></tr>
+                <tr><td><code>xcb_loader.h</code></td><td>Dynamic XCB library loader</td></tr>
+                <tr><td><code>xlib_loader.h</code></td><td>Dynamic Xlib library loader</td></tr>
+                <tr><td><code>wayland_loader.h</code></td><td>Dynamic Wayland library loader</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Initialization Flow</h3>
+        <ol>
+            <li><strong>Vulkan Library Loading</strong> — Dynamically loads <code>libvulkan.so</code> / <code>vulkan-1.dll</code></li>
+            <li><strong>Instance Creation</strong> — Creates VkInstance with required extensions</li>
+            <li><strong>Device Selection</strong> — Enumerates physical devices, selects first suitable GPU</li>
+            <li><strong>Surface Creation</strong> — Platform-specific surface (XCB/Xlib/Wayland/Win32/Android/Metal)</li>
+            <li><strong>Swapchain Setup</strong> — Creates swapchain with appropriate format and present mode</li>
+            <li><strong>Render Pipeline</strong> — Creates descriptor sets, pipeline, command buffers</li>
+            <li><strong>Render Loop</strong> — Spins the cube using model-view-projection matrices</li>
+        </ol>
+
+        <h3>Dynamic WSI Loading Pattern</h3>
+        <pre><code>// Pattern from xcb_loader.h - loads WSI libraries at runtime
+void *libXcb = dlopen("libxcb.so.1", RTLD_LOCAL | RTLD_LAZY);
+my_xcb_connect = (xcb_connection_t*(*)(const char*, int*))dlsym(libXcb, "xcb_connect");</code></pre>
+
+        <h3>Android Build</h3>
+        <p>On Android, <code>vkcube</code> is built as a <strong>shared library</strong> (MODULE) rather than an executable, since it runs within an Android Activity. The Android-specific build is configured in <code>cube/android/CMakeLists.txt</code>.</p>
+    </div>
+
+    <!-- VulkanInfo Module -->
+    <div class="section" id="vulkaninfo">
+        <h2>📊 Module: vulkaninfo</h2>
+
+        <h3>Purpose</h3>
+        <p>Reports detailed information about the Vulkan capabilities of the system's GPU(s). Supports multiple output formats:</p>
+        <ul>
+            <li><strong>Text</strong> — Default console output</li>
+            <li><strong>HTML</strong> — Browser-viewable report</li>
+            <li><strong>JSON</strong> — Machine-readable, for Vulkan Configurator</li>
+        </ul>
+
+        <h3>Key Files</h3>
+        <table>
+            <thead><tr><th>File</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>vulkaninfo.cpp</code></td><td>Main entry point and application logic</td></tr>
+                <tr><td><code>vulkaninfo.h</code></td><td>Core data structures (AppInstance, AppGpu, etc.)</td></tr>
+                <tr><td><code>vulkaninfo_functions.h</code></td><td>Vulkan function implementations</td></tr>
+                <tr><td><code>outputprinter.h</code></td><td>Multi-format output printer (text/html/json)</td></tr>
+                <tr><td><code>generated/vulkaninfo.hpp</code></td><td>Auto-generated Vulkan info output code</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Key Data Structures</h3>
+        <table>
+            <thead><tr><th>Structure</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td><code>AppInstance</code></td><td>Wraps VkInstance, manages instance-level queries</td></tr>
+                <tr><td><code>AppGpu</code></td><td>Wraps VkPhysicalDevice, manages device-level queries</td></tr>
+                <tr><td><code>AppDisplay</code></td><td>Display information</td></tr>
+                <tr><td><code>AppDisplayMode</code></td><td>Display mode information</td></tr>
+                <tr><td><code>AppVideoProfile</code></td><td>Video encode/decode profile information</td></tr>
+                <tr><td><code>Printer</code></td><td>Polymorphic output formatter</td></tr>
+                <tr><td><code>PrinterCreateDetails</code></td><td>Output format and destination configuration</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Output Architecture</h3>
+        <table>
+            <thead><tr><th>OutputType</th><th>Format</th></tr></thead>
+            <tbody>
+                <tr><td><code>OutputType::text</code></td><td>Plain text with indentation</td></tr>
+                <tr><td><code>OutputType::html</code></td><td>HTML tables and formatting</td></tr>
+                <tr><td><code>OutputType::json</code></td><td>JSON structured output</td></tr>
+                <tr><td><code>OutputType::vkconfig_output</code></td><td>Vulkan Configurator compatible JSON</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Error Handling</h3>
+        <table>
+            <thead><tr><th>Exception</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td><code>FileLineException</code></td><td>General errors with file:line information</td></tr>
+                <tr><td><code>VulkanException</code></td><td>Vulkan API errors with VkResult codes</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Helper Templates</h3>
+        <pre><code>// Robust two-call pattern for Vulkan enumeration
+template &lt;typename T, typename F, typename... Ts&gt;
+auto GetVector(const char* func_name, F&amp;&amp; f, Ts&amp;&amp;... ts) -&gt; std::vector&lt;T&gt;;
+
+template &lt;typename T, typename F, typename... Ts&gt;
+auto GetVectorInit(const char* func_name, F&amp;&amp; f, T init, Ts&amp;&amp;... ts) -&gt; std::vector&lt;T&gt;;</code></pre>
+    </div>
+
+    <!-- Mock ICD Module -->
+    <div class="section" id="icd">
+        <h2>🧪 Module: icd (Mock ICD)</h2>
+
+        <h3>Purpose</h3>
+        <p>The Mock ICD (<code>VkICD_mock_icd</code>) is a test driver that implements the Vulkan API without actual hardware. It returns valid-looking data for all queries, enabling testing of the Vulkan loader and layers without a real GPU.</p>
+
+        <h3>Key Files</h3>
+        <table>
+            <thead><tr><th>File</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>mock_icd.cpp</code></td><td>Full Mock ICD implementation</td></tr>
+                <tr><td><code>mock_icd.h</code></td><td>Data structures and state management</td></tr>
+                <tr><td><code>VkICD_mock_icd.json.in</code></td><td>ICD manifest template (CMake configured)</td></tr>
+                <tr><td><code>VkICD_mock_icd.def</code></td><td>Windows DLL export definitions</td></tr>
+                <tr><td><code>generated/function_declarations.h</code></td><td>Auto-generated Vulkan function declarations</td></tr>
+                <tr><td><code>generated/function_definitions.h</code></td><td>Auto-generated Vulkan function stubs</td></tr>
+                <tr><td><code>generated/vk_typemap_helper.h</code></td><td>Auto-generated VkType → VkObjectType mapping</td></tr>
+            </tbody>
+        </table>
+
+        <h3>State Management (vkmock namespace)</h3>
+        <pre><code>namespace vkmock {
+    static mutex_t global_lock;
+    static uint64_t global_unique_handle = 1;            // Handle counter
+    static constexpr uint32_t icd_physical_device_count = 1;
+    static constexpr uint32_t icd_swapchain_image_count = 1;
+
+    // Handle tracking maps
+    physical_device_map   // VkInstance → VkPhysicalDevice[]
+    mapped_memory_map     // VkDeviceMemory → void*[]
+    allocated_memory_size_map  // VkDeviceMemory → VkDeviceSize
+    queue_map             // VkDevice → family → index → VkQueue
+    buffer_map            // VkDevice → VkBuffer → BufferState{size, address}
+    image_memory_size_map // VkDevice → VkImage → VkDeviceSize
+    command_pool_map      // VkDevice → VkCommandPool[]
+    swapchain_image_map   // VkSwapchainKHR → VkImage[]
+}</code></pre>
+
+        <h3>Physical Device Limits</h3>
+        <p><code>SetLimits()</code> configures realistic device limits matching a mid-range GPU profile:</p>
+        <ul>
+            <li>Max Image Dimension 2D: 4096</li>
+            <li>Max Bound Descriptor Sets: 4</li>
+            <li>Max Uniform Buffer Range: 16384</li>
+            <li>Max Storage Buffer Range: 134217728 (128 MB)</li>
+            <li>Max Push Constants Size: 128</li>
+        </ul>
+
+        <h3>ICD Manifest Paths</h3>
+        <table>
+            <thead><tr><th>Platform</th><th>Library Path</th></tr></thead>
+            <tbody>
+                <tr><td>Linux</td><td><code>./libVkICD_mock_icd.so</code></td></tr>
+                <tr><td>macOS</td><td><code>./libVkICD_mock_icd.dylib</code></td></tr>
+                <tr><td>Windows</td><td><code>.\VkICD_mock_icd.dll</code></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Scripts Module -->
+    <div class="section" id="scripts">
+        <h2>📜 Module: scripts (Code Generation)</h2>
+
+        <h3>Purpose</h3>
+        <ul>
+            <li><strong>Code Generation</strong> — Generating C++ headers from the Vulkan XML registry</li>
+            <li><strong>Dependency Management</strong> — Fetching and building known-good dependencies</li>
+            <li><strong>Android Build Automation</strong> — Streamlining Android APK creation</li>
+        </ul>
+
+        <h3>Key Files</h3>
+        <table>
+            <thead><tr><th>File</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>generate_source.py</code></td><td>Main code generation entry point <span class="badge badge-python">Python</span></td></tr>
+                <tr><td><code>kvt_genvk.py</code></td><td>Vulkan tools generation wrapper</td></tr>
+                <tr><td><code>common_codegen.py</code></td><td>Shared utilities</td></tr>
+                <tr><td><code>android.py</code></td><td>Android build automation</td></tr>
+                <tr><td><code>update_deps.py</code></td><td>Dependency fetcher and builder</td></tr>
+                <tr><td><code>known_good.json</code></td><td>Pinned dependency versions</td></tr>
+                <tr><td><code>generators/mock_icd_generator.py</code></td><td>Mock ICD code generator</td></tr>
+                <tr><td><code>generators/vulkaninfo_generator.py</code></td><td>VulkanInfo code generator</td></tr>
+                <tr><td><code>generators/vulkan_tools_helper_file_generator.py</code></td><td>Helper file generator</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Code Generation Targets</h3>
+        <table>
+            <thead><tr><th>Target</th><th>Output Directory</th><th>Generator</th></tr></thead>
+            <tbody>
+                <tr><td><code>vk_typemap_helper.h</code></td><td><code>icd/generated/</code></td><td>HelperFileOutputGenerator</td></tr>
+                <tr><td><code>function_declarations.h</code></td><td><code>icd/generated/</code></td><td>MockICDOutputGenerator</td></tr>
+                <tr><td><code>function_definitions.h</code></td><td><code>icd/generated/</code></td><td>MockICDOutputGenerator</td></tr>
+                <tr><td><code>vulkaninfo.hpp</code></td><td><code>vulkaninfo/generated/</code></td><td>VulkanInfoGenerator</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tests Module -->
+    <div class="section" id="tests">
+        <h2>✅ Module: tests</h2>
+
+        <h3>Purpose</h3>
+        <p>Unit tests for the Mock ICD, using Google Test (googletest v1.14.0).</p>
+
+        <h3>Key Files</h3>
+        <table>
+            <thead><tr><th>File</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>main.cpp</code></td><td>Test runner entry point</td></tr>
+                <tr><td><code>test_common.h</code></td><td>Test utility macros and helpers</td></tr>
+                <tr><td><code>icd/mock_icd_tests.cpp</code></td><td>Mock ICD specific tests</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Dependencies -->
+    <div class="section" id="deps">
+        <h2>📦 Dependencies</h2>
+
+        <p>Dependencies are defined in <code>scripts/known_good.json</code>:</p>
+
+        <table>
+            <thead><tr><th>Dependency</th><th>Version</th><th>Purpose</th><th>Required</th></tr></thead>
+            <tbody>
+                <tr><td>Vulkan-Headers</td><td>v1.4.352</td><td>Vulkan API headers and registry</td><td>Yes</td></tr>
+                <tr><td>MoltenVK</td><td>v1.4.1</td><td>macOS/iOS Vulkan implementation</td><td>macOS only</td></tr>
+                <tr><td>googletest</td><td>v1.14.0</td><td>Test framework</td><td>Tests only</td></tr>
+                <tr><td>Vulkan-Loader</td><td>v1.4.352</td><td>Vulkan runtime loader</td><td>macOS/Tests</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Dependency Resolution</h3>
+        <pre><code># Auto-fetch with CMake
+cmake -S . -B build -D UPDATE_DEPS=ON
+
+# Or manually
+python3 scripts/update_deps.py</code></pre>
+    </div>
+
+    <!-- Cross-Compilation -->
+    <div class="section" id="cross-compile">
+        <h2>🔀 Cross-Compilation Guide</h2>
+
+        <h3>Linux 64-bit (Native)</h3>
+        <pre><code>cmake -S . -B build-x86_64 -D UPDATE_DEPS=ON -D CMAKE_BUILD_TYPE=Release \
+    -D BUILD_CUBE=ON -D BUILD_VULKANINFO=ON -D BUILD_ICD=ON
+cmake --build build-x86_64
+cmake --install build-x86_64 --prefix dist/linux-x86_64</code></pre>
+
+        <h3>Linux 32-bit (Cross-compile on 64-bit host)</h3>
+        <pre><code>sudo apt-get install gcc-multilib g++-multilib libx11-dev:i386
+
+export ASFLAGS=--32
+export CFLAGS=-m32
+export CXXFLAGS=-m32
+export PKG_CONFIG_LIBDIR=/usr/lib/i386-linux-gnu
+
+cmake -S . -B build-x86 -D UPDATE_DEPS=ON -D CMAKE_BUILD_TYPE=Release \
+    -D CMAKE_C_FLAGS=-m32 -D CMAKE_CXX_FLAGS=-m32 \
+    -D BUILD_WSI_XCB_SUPPORT=OFF -D BUILD_WSI_XLIB_SUPPORT=OFF \
+    -D BUILD_WSI_WAYLAND_SUPPORT=OFF \
+    -D BUILD_CUBE=ON -D BUILD_VULKANINFO=ON -D BUILD_ICD=ON
+cmake --build build-x86
+cmake --install build-x86 --prefix dist/linux-x86</code></pre>
+
+        <h3>Android arm64-v8a</h3>
+        <pre><code>export ANDROID_NDK_HOME=$HOME/Android/Sdk/ndk/27.0.12077973
+
+cmake -S . -B build-android-arm64 \
+    -D CMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
+    -D ANDROID_PLATFORM=26 \
+    -D CMAKE_ANDROID_ARCH_ABI=arm64-v8a \
+    -D CMAKE_ANDROID_STL_TYPE=c++_static \
+    -D ANDROID_USE_LEGACY_TOOLCHAIN_FILE=NO \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D UPDATE_DEPS=ON \
+    -G Ninja
+cmake --build build-android-arm64
+cmake --install build-android-arm64 --prefix dist/android-arm64</code></pre>
+
+        <h3>Android armeabi-v7a</h3>
+        <pre><code>cmake -S . -B build-android-arm32 \
+    -D CMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/cmake/android.toolchain.cmake \
+    -D ANDROID_PLATFORM=26 \
+    -D CMAKE_ANDROID_ARCH_ABI=armeabi-v7a \
+    -D CMAKE_ANDROID_STL_TYPE=c++_static \
+    -D ANDROID_USE_LEGACY_TOOLCHAIN_FILE=NO \
+    -D CMAKE_BUILD_TYPE=Release \
+    -D UPDATE_DEPS=ON \
+    -G Ninja
+cmake --build build-android-arm32
+cmake --install build-android-arm32 --prefix dist/android-arm32</code></pre>
+    </div>
+
+    <!-- Key Data Structures -->
+    <div class="section" id="data-structures">
+        <h2>🏗️ Key Data Structures</h2>
+
+        <h3>cube_functions.h — Vulkan Function Pointers</h3>
+        <pre><code>// Global Vulkan function pointers (dynamically loaded)
+PFN_vkGetInstanceProcAddr vkGetInstanceProcAddr;
+PFN_vkEnumerateInstanceExtensionProperties vkEnumerateInstanceExtensionProperties;
+PFN_vkCreateInstance vkCreateInstance;
+
+// Platform-specific surface creation
+PFN_vkCreateXcbSurfaceKHR vkCreateXcbSurfaceKHR;        // XCB
+PFN_vkCreateXlibSurfaceKHR vkCreateXlibSurfaceKHR;      // Xlib
+PFN_vkCreateWaylandSurfaceKHR vkCreateWaylandSurfaceKHR; // Wayland
+PFN_vkCreateAndroidSurfaceKHR vkCreateAndroidSurfaceKHR; // Android
+PFN_vkCreateMetalSurfaceEXT vkCreateMetalSurfaceEXT;     // macOS/iOS</code></pre>
+
+        <h3>mock_icd.h — BufferState</h3>
+        <pre><code>struct BufferState {
+    VkDeviceSize size;
+    VkDeviceAddress address;
+};</code></pre>
+
+        <h3>vulkaninfo.h — Exception Types</h3>
+        <pre><code>struct FileLineException : std::runtime_error {
+    FileLineException(const std::string &amp;arg, const char *file, int line);
+    const char *what() const throw();
+};
+#define THROW_ERR(arg) throw FileLineException(arg, __FILE__, __LINE__);
+
+struct VulkanException : std::runtime_error {
+    VulkanException(const std::string &amp;function, const char *file, int line, VkResult err);
+    const char *what() const throw();
+};
+#define THROW_VK_ERR(func_name, err) throw VulkanException(func_name, __FILE__, __LINE__, err);</code></pre>
+
+        <h3>outputprinter.h — Output System</h3>
+        <pre><code>enum class OutputType { text, html, json, vkconfig_output };
+
+struct PrinterCreateDetails {
+    OutputType output_type = OutputType::text;
+    bool print_to_file = false;
+    std::string file_name = APP_SHORT_NAME ".txt";
+    std::string start_string = "";
+};</code></pre>
+    </div>
+
+    <!-- WSI Platform Support -->
+    <div class="section" id="wsi">
+        <h2>🖥️ WSI Platform Support</h2>
+
+        <table>
+            <thead><tr><th>Platform</th><th>Compile Definition</th><th>Build Option</th><th>Default</th></tr></thead>
+            <tbody>
+                <tr><td>XCB</td><td><code>VK_USE_PLATFORM_XCB_KHR</code></td><td><code>BUILD_WSI_XCB_SUPPORT</code></td><td>ON (Linux)</td></tr>
+                <tr><td>Xlib</td><td><code>VK_USE_PLATFORM_XLIB_KHR</code></td><td><code>BUILD_WSI_XLIB_SUPPORT</code></td><td>ON (Linux)</td></tr>
+                <tr><td>Wayland</td><td><code>VK_USE_PLATFORM_WAYLAND_KHR</code></td><td><code>BUILD_WSI_WAYLAND_SUPPORT</code></td><td>ON (Linux)</td></tr>
+                <tr><td>DirectFB</td><td><code>VK_USE_PLATFORM_DIRECTFB_EXT</code></td><td><code>BUILD_WSI_DIRECTFB_SUPPORT</code></td><td>OFF</td></tr>
+                <tr><td>Display KHR</td><td><code>VK_USE_PLATFORM_DISPLAY_KHR</code></td><td><code>BUILD_WSI_DISPLAY_SUPPORT</code></td><td>ON (non-Apple/Android)</td></tr>
+                <tr><td>Win32</td><td><code>VK_USE_PLATFORM_WIN32_KHR</code></td><td>auto on Windows</td><td>—</td></tr>
+                <tr><td>Android</td><td><code>VK_USE_PLATFORM_ANDROID_KHR</code></td><td>auto on Android</td><td>—</td></tr>
+                <tr><td>Metal</td><td><code>VK_USE_PLATFORM_METAL_EXT</code></td><td>auto on Apple</td><td>—</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Code Generation Pipeline -->
+    <div class="section" id="codegen">
+        <h2>⚙️ Code Generation Pipeline</h2>
+
+        <h3>Generation Flow</h3>
+        <div class="flow">
+<span class="output">vk.xml (Vulkan Registry)</span><br>
+<span class="arrow">↓</span><br>
+<span class="gen">generate_source.py</span><br>
+<span class="arrow">↓</span><br>
+<span class="gen">Registry (from Vulkan-Headers/reg.py)</span><br>
+<span class="arrow">↓</span><br>
+┌─────────────────────────┬──────────────────────────┬──────────────────────┐<br>
+│ <span class="gen">MockICDOutputGenerator</span>  │ <span class="gen">HelperFileOutputGenerator</span> │ <span class="gen">VulkanInfoGenerator</span>  │<br>
+│  ├─ <span class="output">function_declarations.h</span> │  └─ <span class="output">vk_typemap_helper.h</span>  │  └─ <span class="output">vulkaninfo.hpp</span> │<br>
+│  └─ <span class="output">function_definitions.h</span>  │                           │                    │<br>
+└─────────────────────────┴──────────────────────────┴──────────────────────┘<br>
+<span class="arrow">↓</span> (optional)<br>
+<span class="gen">clang-format</span> (if available)
+        </div>
+
+        <h3>Usage</h3>
+        <pre><code># Generate all code
+python3 scripts/generate_source.py &lt;path-to-vulkan-headers-registry&gt;
+
+# Incremental update
+python3 scripts/generate_source.py &lt;registry&gt; --incremental --generated-version 1.4.352
+
+# Verify generated code matches repo
+python3 scripts/generate_source.py &lt;registry&gt; --verify
+
+# CMake integration
+cmake -S . -B build -D TOOLS_CODEGEN=ON
+cmake --build build --target tools_codegen</code></pre>
+
+        <h3>Version Management</h3>
+        <p>When <code>--generated-version</code> is passed:</p>
+        <ol>
+            <li>Updates <code>icd/VkICD_mock_icd.json.in</code> with new API version</li>
+            <li>Updates <code>CMakeLists.txt</code> project version</li>
+            <li>Generates code matching the specified Vulkan API version</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>Generated on 2026-05-28 from branch <code>main</code> at commit <code>e3d18f9</code></p>
+        <p>Vulkan-Tools — Khronos Group | LunarG, Inc. | Valve Corporation</p>
+    </div>
+
+</div>
+</body>
+</html>
